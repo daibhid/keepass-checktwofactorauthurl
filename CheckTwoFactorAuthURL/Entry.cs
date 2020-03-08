@@ -1,21 +1,34 @@
 ﻿namespace CheckTwoFactorAuthURL
 {
     using System.Drawing;
+    using Newtonsoft.Json;
 
-    internal class Entry
+    public class Entry
     {
-        public string URL { get; }
+        [JsonProperty("url")]
+        public string URL { get; set; }
 
-        public string Name { get; }
+        [JsonProperty("name")]
+        public string Name { get; set; }
 
-        public bool SupportsTwoFactor { get; }
+        [JsonProperty("tfa")]
+        public bool SupportsTwoFactor { get; set; }
 
-        public bool SupportsSmS { get; }
+        [JsonProperty("sms")]
+        public bool SupportsSmS { get; set; }
 
-        public bool SupportsPhone { get; }
+        [JsonProperty("phone")]
+        public bool SupportsPhone { get; set; }
 
-        public bool SupportsSoftware { get; }
+        [JsonProperty("software")]
+        public bool SupportsSoftware { get; set; }
 
-        public Icon Icon { get; }
+        [JsonProperty("hardware")]
+        public bool SupportsHardware { get; set; }
+
+        [JsonProperty("icon")]
+        public Icon Icon { get; set; }
+
+        public string Category { get; set; }
     }
 }

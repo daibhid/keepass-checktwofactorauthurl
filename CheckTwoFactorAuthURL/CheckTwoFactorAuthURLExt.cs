@@ -6,7 +6,6 @@ namespace CheckTwoFactorAuthURL
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
     using System.Net;
     using System.Windows.Forms;
@@ -14,18 +13,21 @@ namespace CheckTwoFactorAuthURL
     using KeePass.Plugins;
     using KeePass.Resources;
     using KeePassLib;
-    using Newtonsoft.Json.Linq;
+    using Newtonsoft.Json;
 
     public class CheckTwoFactorAuthURLExt : Plugin
     {
         private IPluginHost host;
-        private List<JToken> data;
+        private List<Entry> data;
+
+        public void Init()
+        {
+            this.data = this.GetData();
+        }
 
         public override bool Initialize(IPluginHost host)
         {
             this.host = host;
-
-            //System.Diagnostics.Debugger.Launch();
 
             this.data = this.GetData();
 
@@ -47,13 +49,14 @@ namespace CheckTwoFactorAuthURL
 
         private void MenuItem_Click(object sender, System.EventArgs e)
         {
-            List<PwEntry> results = new List<PwEntry>();
+            List<Tuple<PwEntry, Entry>> results = new List<Tuple<PwEntry, Entry>>();
 
             foreach (PwEntry entry in this.host.Database.RootGroup.GetEntries(true))
             {
-                if (this.FindMatchingEntries(entry.Strings.Get(KPRes.Url).ReadString()).Any())
+                var matchingEntries = this.FindMatchingEntries(entry.Strings.Get(KPRes.Url).ReadString());
+                if (matchingEntries.Any())
                 {
-                    results.Add(entry);
+                    results.Add(new Tuple<PwEntry, Entry>(entry, matchingEntries.First()));
                 }
             }
 
@@ -63,36 +66,45 @@ namespace CheckTwoFactorAuthURL
             form.ShowDialog();
         }
 
-        public IEnumerable<JToken> FindMatchingEntries(string targetUrl)
+        public IEnumerable<Entry> FindMatchingEntries(string targetUrl)
         {
-            Uri discard;
-            if (!Uri.TryCreate(targetUrl, UriKind.Absolute, out discard))
+            try
             {
-                return Enumerable.Empty<JToken>();
-            }
+                Uri discard;
+                //if (!Uri.TryCreate(targetUrl, UriKind.Absolute, out discard))
+                //{
+                //    return Enumerable.Empty<Entry>();
+                //}
 
-            return this.data.Where(entry =>
-                Uri.TryCreate(entry.First["url"].ToString(), UriKind.Absolute, out discard) &&
-                Uri.Compare(
-                    new Uri(targetUrl),
-                    new Uri(entry.First["url"].ToString()),
-                    UriComponents.Host,
-                    UriFormat.Unescaped,
-                    StringComparison.CurrentCultureIgnoreCase) == 0);
+                return this.data.Where(entry =>
+                    Uri.TryCreate(entry.URL, UriKind.Absolute, out discard) &&
+                    Uri.Compare(
+                        new UriBuilder(targetUrl).Uri,
+                        new Uri(entry.URL),
+                        UriComponents.Host,
+                        UriFormat.Unescaped,
+                        StringComparison.CurrentCultureIgnoreCase) == 0);
+            }
+            catch (Exception)
+            {
+                return Enumerable.Empty<Entry>();
+            }
         }
 
-        public List<JToken> GetData()
+        public List<Entry> GetData()
         {
             ServicePointManager.Expect100Continue = true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
             string rawData;
-            using (var client = new WebClient())
+            using (WebClient client = new WebClient())
             {
                 rawData = client.DownloadString(Resources.TwoFactorURL);
             }
 
-            return JObject.Parse(rawData).Root.SelectMany(item => item.Values()).ToList();
+            var categorizedData = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, Entry>>>(rawData);
+
+            return categorizedData.SelectMany(categorizedNamedEntry => categorizedNamedEntry.Value.Select(namedEntry => { namedEntry.Value.Category = categorizedNamedEntry.Key; return namedEntry; })).Select(keyValuePair => keyValuePair.Value).ToList();
         }
     }
 }

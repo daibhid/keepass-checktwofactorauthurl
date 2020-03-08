@@ -17,9 +17,11 @@
         [Test]
         public void GetDataTest()
         {
-            CheckTwoFactorAuthURLExt class1 = new CheckTwoFactorAuthURLExt();
+            CheckTwoFactorAuthURLExt plugin = new CheckTwoFactorAuthURLExt();
 
-            foreach (var item in class1.GetData())
+            var data = plugin.GetData();
+
+            foreach (var item in data)
             {
                 Assert.AreNotEqual(string.Empty, item);
             }
@@ -28,18 +30,24 @@
         [Test]
         public void FindMatchingEntriesTest()
         {
-            CheckTwoFactorAuthURLExt class1 = new CheckTwoFactorAuthURLExt();
+            CheckTwoFactorAuthURLExt plugin = new CheckTwoFactorAuthURLExt();
+
+            plugin.Init();
 
             Assert.Multiple(() =>
             {
-                Assert.AreEqual(string.Empty, class1.FindMatchingEntries("aa"));
+                Assert.AreEqual(string.Empty, plugin.FindMatchingEntries("aa"));
 
-                Assert.AreEqual(Enumerable.Empty<JToken>(), class1.FindMatchingEntries("https://this.is.not.a.real.url.com"));
+                Assert.AreEqual(Enumerable.Empty<JToken>(), plugin.FindMatchingEntries("https://this.is.not.a.real.url.com"));
 
-                Assert.AreNotEqual(Enumerable.Empty<JToken>(), class1.FindMatchingEntries("https://drive.google.com"));
-                Assert.AreNotEqual(Enumerable.Empty<JToken>(), class1.FindMatchingEntries("https://drive.google.com/"));
-                Assert.AreNotEqual(Enumerable.Empty<JToken>(), class1.FindMatchingEntries("https://drive.google.com/somesuffix"));
-                Assert.AreNotEqual(Enumerable.Empty<JToken>(), class1.FindMatchingEntries("http://drive.google.com/"));
+                Assert.AreNotEqual(Enumerable.Empty<JToken>(), plugin.FindMatchingEntries("https://someotherdomain.google.com"));
+
+                Assert.AreNotEqual(Enumerable.Empty<JToken>(), plugin.FindMatchingEntries("https://drive.google.com"));
+                Assert.AreNotEqual(Enumerable.Empty<JToken>(), plugin.FindMatchingEntries("https://drive.google.com/"));
+                Assert.AreNotEqual(Enumerable.Empty<JToken>(), plugin.FindMatchingEntries("https://drive.google.com/somesuffix"));
+                Assert.AreNotEqual(Enumerable.Empty<JToken>(), plugin.FindMatchingEntries("http://drive.google.com/"));
+
+                Assert.AreNotEqual(Enumerable.Empty<JToken>(), plugin.FindMatchingEntries("www.humblebundle.com"));
             });
         }
     }
