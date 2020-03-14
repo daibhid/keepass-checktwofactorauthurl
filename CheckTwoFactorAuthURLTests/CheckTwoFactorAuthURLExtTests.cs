@@ -31,9 +31,7 @@ namespace CheckTwoFactorAuthURL.Tests
         {
             CheckTwoFactorAuthURLExt plugin = new CheckTwoFactorAuthURLExt();
 
-            System.Collections.Generic.List<Entry> data = plugin.GetData();
-
-            foreach (Entry item in data)
+            foreach (Entry item in plugin.GetData())
             {
                 Assert.AreNotEqual(string.Empty, item);
             }
