@@ -55,37 +55,22 @@ namespace CheckTwoFactorAuthURL
             return base.Initialize(host);
         }
 
-        private void MenuItem_Click(object sender, System.EventArgs e)
-        {
-            List<Tuple<PwEntry, Entry>> results = new List<Tuple<PwEntry, Entry>>();
-
-            foreach (PwEntry entry in this.host.Database.RootGroup.GetEntries(true))
-            {
-                var matchingEntries = this.FindMatchingEntries(entry.Strings.Get(KPRes.Url).ReadString());
-                if (matchingEntries.Any())
-                {
-                    results.Add(new Tuple<PwEntry, Entry>(entry, matchingEntries.First()));
-                }
-            }
-
-            ResultsForm form = new ResultsForm();
-
-            form.SetResults(results);
-            form.ShowDialog();
-        }
-
+        /// <summary>
+        /// Gets any entries in the list of sites that match the given URL.
+        /// </summary>
+        /// <param name="targetUrl">The search URL.</param>
+        /// <returns>A list of <see cref="Entry"/>s that have some of this url.</returns>
         public IEnumerable<Entry> FindMatchingEntries(string targetUrl)
         {
             try
             {
-                Uri discard;
-                //if (!Uri.TryCreate(targetUrl, UriKind.Absolute, out discard))
-                //{
-                //    return Enumerable.Empty<Entry>();
-                //}
+                ////if (!Uri.TryCreate(targetUrl, UriKind.Absolute, out discard))
+                ////{
+                ////    return Enumerable.Empty<Entry>();
+                ////}
 
                 return this.data.Where(entry =>
-                    Uri.TryCreate(entry.URL, UriKind.Absolute, out discard) &&
+                    Uri.TryCreate(entry.URL, UriKind.Absolute, out Uri discard) &&
                     Uri.Compare(
                         new UriBuilder(targetUrl).Uri,
                         new Uri(entry.URL),
@@ -114,9 +99,34 @@ namespace CheckTwoFactorAuthURL
                 rawData = client.DownloadString(Resources.TwoFactorURL);
             }
 
-            var categorizedData = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, Entry>>>(rawData);
+            Dictionary<string, Dictionary<string, Entry>> categorizedData = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, Entry>>>(rawData);
 
-            return categorizedData.SelectMany(categorizedNamedEntry => categorizedNamedEntry.Value.Select(namedEntry => { namedEntry.Value.Category = categorizedNamedEntry.Key; return namedEntry; })).Select(keyValuePair => keyValuePair.Value).ToList();
+            return categorizedData.SelectMany(categorizedNamedEntry => categorizedNamedEntry.Value.Select(namedEntry =>
+            {
+                namedEntry.Value.Category = categorizedNamedEntry.Key;
+                return namedEntry;
+            })).Select(keyValuePair => keyValuePair.Value).ToList();
+        }
+
+        private void MenuItem_Click(object sender, System.EventArgs e)
+        {
+            List<Tuple<PwEntry, Entry>> results = new List<Tuple<PwEntry, Entry>>();
+
+            foreach (PwEntry entry in this.host.Database.RootGroup.GetEntries(true))
+            {
+                IEnumerable<Entry> matchingEntries = this.FindMatchingEntries(entry.Strings.Get(KPRes.Url).ReadString());
+                if (matchingEntries.Any())
+                {
+                    results.Add(new Tuple<PwEntry, Entry>(entry, matchingEntries.First()));
+                }
+            }
+
+            results.Sort((left, right) => left.Item1.Strings.Get(KPRes.Title).ReadString().CompareTo(right.Item1.Strings.Get(KPRes.Title).ReadString()));
+
+            ResultsForm form = new ResultsForm();
+
+            form.SetResults(results);
+            form.Show();
         }
     }
 }

@@ -21,7 +21,7 @@ namespace CheckTwoFactorAuthURL
         /// </summary>
         public ResultsForm()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         /// <summary>
@@ -30,16 +30,17 @@ namespace CheckTwoFactorAuthURL
         /// <param name="results">The data used to populate.</param>
         internal void SetResults(List<Tuple<PwEntry, Entry>> results)
         {
-            dataGridView1.Rows.Clear();
+            this.dataGridView1.Rows.Clear();
 
-            foreach (var item in results)
+            foreach (Tuple<PwEntry, Entry> item in results)
             {
-                dataGridView1.Rows.Add(new object[] {
+                this.dataGridView1.Rows.Add(new object[]
+                {
                     item.Item1.Strings.Get(KPRes.Title).ReadString(),
                     item.Item1.Strings.Get(KPRes.Url).ReadString(),
                     item.Item2.SupportsTwoFactor,
                     item.Item2.SupportsPhone,
-                    item.Item2.SupportsSmS,
+                    item.Item2.SupportsSMS,
                     item.Item2.SupportsHardware,
                     item.Item2.SupportsSoftware,
                 });

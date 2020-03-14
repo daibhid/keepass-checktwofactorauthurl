@@ -5,16 +5,14 @@
 
 namespace CheckTwoFactorAuthURL.Tests
 {
-    using System.Linq;
     using CheckTwoFactorAuthURL;
-    using Newtonsoft.Json.Linq;
     using NUnit.Framework;
 
     /// <summary>
     /// Tests the <see cref="CheckTwoFactorAuthURLExt"/> class.
     /// </summary>
     [TestFixture]
-    public class CheckTwoFactorAuthURLExtTestsTests
+    public class CheckTwoFactorAuthURLExtTests
     {
         /// <summary>
         /// Tests the <see cref="CheckTwoFactorAuthURLExt.Initialize(KeePass.Plugins.IPluginHost)"/> method.
@@ -33,9 +31,9 @@ namespace CheckTwoFactorAuthURL.Tests
         {
             CheckTwoFactorAuthURLExt plugin = new CheckTwoFactorAuthURLExt();
 
-            var data = plugin.GetData();
+            System.Collections.Generic.List<Entry> data = plugin.GetData();
 
-            foreach (var item in data)
+            foreach (Entry item in data)
             {
                 Assert.AreNotEqual(string.Empty, item);
             }
@@ -55,17 +53,29 @@ namespace CheckTwoFactorAuthURL.Tests
             {
                 Assert.AreEqual(string.Empty, plugin.FindMatchingEntries("aa"));
 
-                Assert.AreEqual(Enumerable.Empty<JToken>(), plugin.FindMatchingEntries("https://this.is.not.a.real.url.com"));
+                this.TestEmpty("https://this.is.not.a.real.url.com", plugin);
 
-                Assert.AreNotEqual(Enumerable.Empty<JToken>(), plugin.FindMatchingEntries("https://someotherdomain.google.com"));
+                this.TestNotEmpty("https://someotherdomain.google.com", plugin);
 
-                Assert.AreNotEqual(Enumerable.Empty<JToken>(), plugin.FindMatchingEntries("https://drive.google.com"));
-                Assert.AreNotEqual(Enumerable.Empty<JToken>(), plugin.FindMatchingEntries("https://drive.google.com/"));
-                Assert.AreNotEqual(Enumerable.Empty<JToken>(), plugin.FindMatchingEntries("https://drive.google.com/somesuffix"));
-                Assert.AreNotEqual(Enumerable.Empty<JToken>(), plugin.FindMatchingEntries("http://drive.google.com/"));
+                this.TestNotEmpty("https://drive.google.com", plugin);
+                this.TestNotEmpty("https://drive.google.com/", plugin);
+                this.TestNotEmpty("https://drive.google.com/somesuffix", plugin);
+                this.TestNotEmpty("http://drive.google.com/", plugin);
 
-                Assert.AreNotEqual(Enumerable.Empty<JToken>(), plugin.FindMatchingEntries("www.humblebundle.com"));
+                this.TestNotEmpty("www.humblebundle.com", plugin);
+
+                this.TestNotEmpty("www.apple.com", plugin);
             });
+        }
+
+        private void TestNotEmpty(string url, CheckTwoFactorAuthURLExt plugin)
+        {
+            Assert.IsNotEmpty(plugin.FindMatchingEntries(url), url);
+        }
+
+        private void TestEmpty(string url, CheckTwoFactorAuthURLExt plugin)
+        {
+            Assert.IsEmpty(plugin.FindMatchingEntries(url), url);
         }
     }
 }
