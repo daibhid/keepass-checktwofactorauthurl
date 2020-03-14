@@ -1,5 +1,6 @@
-﻿// <copyright file="Class1.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+﻿// <copyright file="CheckTwoFactorAuthURLExt.cs" company="daibhid">
+// Copyright (c) daibhid. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 
 namespace CheckTwoFactorAuthURL
@@ -15,16 +16,23 @@ namespace CheckTwoFactorAuthURL
     using KeePassLib;
     using Newtonsoft.Json;
 
+    /// <summary>
+    /// The main class for the plugin.
+    /// </summary>
     public class CheckTwoFactorAuthURLExt : Plugin
     {
         private IPluginHost host;
         private List<Entry> data;
 
+        /// <summary>
+        /// Method call to initialize the data for testing purposes.
+        /// </summary>
         public void Init()
         {
             this.data = this.GetData();
         }
 
+        /// <inheritdoc/>
         public override bool Initialize(IPluginHost host)
         {
             this.host = host;
@@ -91,6 +99,10 @@ namespace CheckTwoFactorAuthURL
             }
         }
 
+        /// <summary>
+        /// Retreives the data on site's two-factor methods from https://twofactorauth.org/.
+        /// </summary>
+        /// <returns>A parsed list of all the supported sites and their supported methods.</returns>
         public List<Entry> GetData()
         {
             ServicePointManager.Expect100Continue = true;

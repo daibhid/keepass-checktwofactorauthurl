@@ -1,19 +1,33 @@
-﻿namespace CheckTwoFactorAuthURL.Tests
+﻿// <copyright file="CheckTwoFactorAuthURLExtTests.cs" company="daibhid">
+// Copyright (c) daibhid. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+
+namespace CheckTwoFactorAuthURL.Tests
 {
     using System.Linq;
     using CheckTwoFactorAuthURL;
     using Newtonsoft.Json.Linq;
     using NUnit.Framework;
 
+    /// <summary>
+    /// Tests the <see cref="CheckTwoFactorAuthURLExt"/> class.
+    /// </summary>
     [TestFixture]
     public class CheckTwoFactorAuthURLExtTestsTests
     {
+        /// <summary>
+        /// Tests the <see cref="CheckTwoFactorAuthURLExt.Initialize(KeePass.Plugins.IPluginHost)"/> method.
+        /// </summary>
         [Test]
         public void InitializeTest()
         {
             Assert.Inconclusive();
         }
 
+        /// <summary>
+        /// Tests the <see cref="CheckTwoFactorAuthURLExt.GetData"/> method.
+        /// </summary>
         [Test]
         public void GetDataTest()
         {
@@ -27,6 +41,9 @@
             }
         }
 
+        /// <summary>
+        /// Tests the <see cref="CheckTwoFactorAuthURLExt.FindMatchingEntries(string)"/> method.
+        /// </summary>
         [Test]
         public void FindMatchingEntriesTest()
         {

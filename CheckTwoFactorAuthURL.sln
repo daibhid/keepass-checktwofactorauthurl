@@ -1,11 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.757
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckTwoFactorAuthURL", "CheckTwoFactorAuthURL\CheckTwoFactorAuthURL.csproj", "{55157160-9484-495A-88EC-ADF81C7CBBF8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckTwoFactorAuthURLTests", "CheckTwoFactorAuthURLTests\CheckTwoFactorAuthURLTests.csproj", "{4C090343-FE0B-47B6-89A5-5002A87AA453}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{08078321-B53E-475A-814E-AFFBF781CC7B}"
+	ProjectSection(SolutionItems) = preProject
+		stylecop.json = stylecop.json
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
