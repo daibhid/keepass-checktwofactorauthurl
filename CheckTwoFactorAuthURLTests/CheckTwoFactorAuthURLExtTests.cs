@@ -61,8 +61,21 @@ namespace CheckTwoFactorAuthURL.Tests
                 this.TestNotEmpty("http://drive.google.com/", plugin);
 
                 this.TestNotEmpty("www.humblebundle.com", plugin);
-
                 this.TestNotEmpty("www.apple.com", plugin);
+                this.TestNotEmpty("paypal.com", plugin);
+                this.TestNotEmpty("https://www.linkedin.com", plugin);
+                this.TestNotEmpty("https://online.hmrc.gov.uk", plugin);
+                this.TestNotEmpty("https://login.skype.com", plugin);
+                this.TestNotEmpty("https://support.snapchat.com", plugin);
+                this.TestNotEmpty("https://accounts.spotify.com", plugin);
+                this.TestNotEmpty("https://www.starbucks.co.uk", plugin);
+
+                this.TestNotEmpty("https://steamcommunity.com", plugin);
+                this.TestNotEmpty("store.steampowered.com", plugin);
+
+                this.TestNotEmpty("https://tickets.scotrail.co.uk", plugin);
+                this.TestNotEmpty("twitch.tv", plugin);
+                this.TestNotEmpty("https://auth.uber.com", plugin);
             });
         }
 
