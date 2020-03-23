@@ -64,21 +64,19 @@ namespace CheckTwoFactorAuthURL
         {
             try
             {
-                Uri discard;
+                Uri entryUrl, targetUri;
                 ////if (!Uri.TryCreate(targetUrl, UriKind.Absolute, out discard))
                 ////{
                 ////    return Enumerable.Empty<Entry>();
                 ////}
 
-                return this.data.Where(entry =>
-                    Uri.TryCreate(entry.URL, UriKind.Absolute, out discard) &&
-                    Uri.TryCreate(targetUrl, UriKind.Absolute, out discard) &&
-                    Uri.Compare(
-                        new UriBuilder(targetUrl).Uri,
-                        new Uri(entry.URL),
-                        UriComponents.NormalizedHost,
-                        UriFormat.Unescaped,
-                        StringComparison.CurrentCultureIgnoreCase) == 0);
+                bool parsedUri = Uri.TryCreate(targetUrl, UriKind.Absolute, out targetUri) || Uri.TryCreate("http://" + targetUrl, UriKind.Absolute, out targetUri);
+
+                return !parsedUri ? Enumerable.Empty<Entry>() :
+                    this.data.Where(entry =>
+                        Uri.TryCreate(entry.URL, UriKind.Absolute, out entryUrl) &&
+
+                        targetUri.Host.Contains(entryUrl.Host.Replace("www.", string.Empty)));
             }
             catch (Exception)
             {
