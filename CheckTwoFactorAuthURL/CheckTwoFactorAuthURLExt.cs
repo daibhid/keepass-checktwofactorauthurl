@@ -1,4 +1,4 @@
-// <copyright file="CheckTwoFactorAuthURLExt.cs" company="daibhid">
+﻿// <copyright file="CheckTwoFactorAuthURLExt.cs" company="daibhid">
 // Copyright (c) daibhid. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -64,19 +64,16 @@ namespace CheckTwoFactorAuthURL
         {
             try
             {
-                Uri entryUrl, targetUri;
-                ////if (!Uri.TryCreate(targetUrl, UriKind.Absolute, out discard))
-                ////{
-                ////    return Enumerable.Empty<Entry>();
-                ////}
+                Uri targetUri = new UriBuilder(targetUrl).Uri;
 
-                bool parsedUri = Uri.TryCreate(targetUrl, UriKind.Absolute, out targetUri) || Uri.TryCreate("http://" + targetUrl, UriKind.Absolute, out targetUri);
+                return this.data.Where(twoFactorSource =>
+                {
+                    Uri twoFactorSupportedUrl = new UriBuilder(twoFactorSource.URL).Uri;
 
-                return !parsedUri ? Enumerable.Empty<Entry>() :
-                    this.data.Where(entry =>
-                        Uri.TryCreate(entry.URL, UriKind.Absolute, out entryUrl) &&
+                    //// We need to split targetUri.Host into each subdomain, then test that against twoFactorSupportedUrl.Host without the "www." prefix.
 
-                        targetUri.Host.Contains(entryUrl.Host.Replace("www.", string.Empty)));
+                    return targetUri.Host.GetAllSubdomains().Any(subdomain => string.Compare(twoFactorSupportedUrl.Host.Replace("www.", string.Empty), subdomain, true) == 0);
+                });
             }
             catch (Exception)
             {
