@@ -1,4 +1,4 @@
-﻿// <copyright file="CheckTwoFactorAuthURLExt.cs" company="daibhid">
+// <copyright file="CheckTwoFactorAuthURLExt.cs" company="daibhid">
 // Copyright (c) daibhid. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -22,7 +22,7 @@ namespace CheckTwoFactorAuthURL
     public class CheckTwoFactorAuthURLExt : Plugin
     {
         private IPluginHost host;
-        private List<Entry> data;
+        private List<TwoFactorSite> data;
 
         /// <summary>
         /// Method call to initialize the data for testing purposes.
@@ -59,8 +59,8 @@ namespace CheckTwoFactorAuthURL
         /// Gets any entries in the list of sites that match the given URL.
         /// </summary>
         /// <param name="targetUrl">The search URL.</param>
-        /// <returns>A list of <see cref="Entry"/>s that have some of this url.</returns>
-        public IEnumerable<Entry> FindMatchingEntries(string targetUrl)
+        /// <returns>A list of <see cref="TwoFactorSite"/>s that have some of this url.</returns>
+        public IEnumerable<TwoFactorSite> FindMatchingEntries(string targetUrl)
         {
             try
             {
@@ -80,7 +80,7 @@ namespace CheckTwoFactorAuthURL
             }
             catch (Exception)
             {
-                return Enumerable.Empty<Entry>();
+                return Enumerable.Empty<TwoFactorSite>();
             }
         }
 
@@ -88,7 +88,7 @@ namespace CheckTwoFactorAuthURL
         /// Retreives the data on site's two-factor methods from https://twofactorauth.org/.
         /// </summary>
         /// <returns>A parsed list of all the supported sites and their supported methods.</returns>
-        public List<Entry> GetData()
+        public List<TwoFactorSite> GetData()
         {
             ServicePointManager.Expect100Continue = true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
@@ -99,7 +99,7 @@ namespace CheckTwoFactorAuthURL
                 rawData = client.DownloadString(Resources.TwoFactorURL);
             }
 
-            Dictionary<string, Dictionary<string, Entry>> categorizedData = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, Entry>>>(rawData);
+            Dictionary<string, Dictionary<string, TwoFactorSite>> categorizedData = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, TwoFactorSite>>>(rawData);
 
             return categorizedData.SelectMany(categorizedNamedEntry => categorizedNamedEntry.Value.Select(namedEntry =>
             {
@@ -110,14 +110,14 @@ namespace CheckTwoFactorAuthURL
 
         private void MenuItem_Click(object sender, System.EventArgs e)
         {
-            List<Tuple<PwEntry, Entry>> results = new List<Tuple<PwEntry, Entry>>();
+            List<Tuple<PwEntry, TwoFactorSite>> results = new List<Tuple<PwEntry, TwoFactorSite>>();
 
             foreach (PwEntry entry in this.host.Database.RootGroup.GetEntries(true))
             {
-                IEnumerable<Entry> matchingEntries = this.FindMatchingEntries(entry.Strings.Get(KPRes.Url).ReadString());
+                IEnumerable<TwoFactorSite> matchingEntries = this.FindMatchingEntries(entry.Strings.Get(KPRes.Url).ReadString());
                 if (matchingEntries.Any())
                 {
-                    results.Add(new Tuple<PwEntry, Entry>(entry, matchingEntries.First()));
+                    results.Add(new Tuple<PwEntry, TwoFactorSite>(entry, matchingEntries.First()));
                 }
             }
 

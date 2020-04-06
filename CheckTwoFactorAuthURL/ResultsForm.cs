@@ -1,4 +1,4 @@
-﻿// <copyright file="ResultsForm.cs" company="daibhid">
+// <copyright file="ResultsForm.cs" company="daibhid">
 // Copyright (c) daibhid. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -28,11 +28,11 @@ namespace CheckTwoFactorAuthURL
         /// Fills the results data into the form.
         /// </summary>
         /// <param name="results">The data used to populate.</param>
-        internal void SetResults(List<Tuple<PwEntry, Entry>> results)
+        internal void SetResults(List<Tuple<PwEntry, TwoFactorSite>> results)
         {
             this.dataGridView1.Rows.Clear();
 
-            foreach (Tuple<PwEntry, Entry> item in results)
+            foreach (Tuple<PwEntry, TwoFactorSite> item in results)
             {
                 this.dataGridView1.Rows.Add(new object[]
                 {

@@ -1,4 +1,4 @@
-﻿// <copyright file="CheckTwoFactorAuthURLExtTests.cs" company="daibhid">
+// <copyright file="CheckTwoFactorAuthURLExtTests.cs" company="daibhid">
 // Copyright (c) daibhid. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -31,7 +31,7 @@ namespace CheckTwoFactorAuthURL.Tests
         {
             CheckTwoFactorAuthURLExt plugin = new CheckTwoFactorAuthURLExt();
 
-            foreach (Entry item in plugin.GetData())
+            foreach (TwoFactorSite item in plugin.GetData())
             {
                 Assert.AreNotEqual(string.Empty, item);
             }
@@ -76,6 +76,10 @@ namespace CheckTwoFactorAuthURL.Tests
                 this.TestNotEmpty("https://tickets.scotrail.co.uk", plugin);
                 this.TestNotEmpty("twitch.tv", plugin);
                 this.TestNotEmpty("https://auth.uber.com", plugin);
+
+                this.TestEmpty("https://www.easyjet.com", plugin);
+                this.TestEmpty("https://yourlibrary.edinburgh.gov.uk", plugin);
+                this.TestEmpty("https://www.royalmail.com", plugin);
             });
         }
 
