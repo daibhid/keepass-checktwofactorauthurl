@@ -1,0 +1,3 @@
+[submodule "keepass-targets"]
+	path = keepass-targets
+	url = https://github.com/daibhid/keepass-targets.git
