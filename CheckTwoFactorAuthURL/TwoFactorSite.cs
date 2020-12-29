@@ -5,6 +5,7 @@
 
 namespace CheckTwoFactorAuthURL
 {
+    using System.Collections.Generic;
     using System.Drawing;
     using Newtonsoft.Json;
 
@@ -29,31 +30,7 @@ namespace CheckTwoFactorAuthURL
         /// Gets or sets a value indicating whether this site supports any 2-factor method.
         /// </summary>
         [JsonProperty("tfa")]
-        public bool SupportsTwoFactor { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the site supports 2-factor over SMS.
-        /// </summary>
-        [JsonProperty("sms")]
-        public bool SupportsSMS { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the site supports 2-factor over phone.
-        /// </summary>
-        [JsonProperty("phone")]
-        public bool SupportsPhone { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the site supports 2-factor with software key.
-        /// </summary>
-        [JsonProperty("software")]
-        public bool SupportsSoftware { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the site supports 2-factor with a hardware key.
-        /// </summary>
-        [JsonProperty("hardware")]
-        public bool SupportsHardware { get; set; }
+        public List<string> Methods { get; set; }
 
         /// <summary>
         /// Gets or sets the site's icon.

@@ -38,11 +38,11 @@ namespace CheckTwoFactorAuthURL
                 {
                     item.Item1.Strings.Get(KPRes.Title).ReadString(),
                     item.Item1.Strings.Get(KPRes.Url).ReadString(),
-                    item.Item2.SupportsTwoFactor,
-                    item.Item2.SupportsPhone,
-                    item.Item2.SupportsSMS,
-                    item.Item2.SupportsHardware,
-                    item.Item2.SupportsSoftware,
+                    item.Item2.Methods.SupportsTwoFactor(),
+                    item.Item2.Methods.SupportsPhone(),
+                    item.Item2.Methods.SupportsSMS(),
+                    item.Item2.Methods.SupportsHardware(),
+                    item.Item2.Methods.SupportsSoftware(),
                 });
             }
         }
