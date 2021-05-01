@@ -1,10 +1,12 @@
-// <copyright file="CheckTwoFactorAuthURLExtTests.cs" company="daibhid">
+﻿// <copyright file="CheckTwoFactorAuthURLExtTests.cs" company="daibhid">
 // Copyright (c) daibhid. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 
 namespace CheckTwoFactorAuthURL.Tests
 {
+    using System.IO;
+    using System.Linq;
     using CheckTwoFactorAuthURL;
     using NUnit.Framework;
 
@@ -35,6 +37,8 @@ namespace CheckTwoFactorAuthURL.Tests
             {
                 Assert.AreNotEqual(string.Empty, item);
             }
+
+            File.WriteAllLines("urls.txt", plugin.GetData().Select(entry => entry.URL));
         }
 
         /// <summary>

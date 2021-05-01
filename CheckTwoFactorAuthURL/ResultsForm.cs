@@ -38,6 +38,7 @@ namespace CheckTwoFactorAuthURL
                 {
                     item.Item1.Strings.Get(KPRes.Title).ReadString(),
                     item.Item1.Strings.Get(KPRes.Url).ReadString(),
+                    item.Item2.URL,
                     item.Item2.Methods.SupportsTwoFactor(),
                     item.Item2.Methods.SupportsPhone(),
                     item.Item2.Methods.SupportsSMS(),

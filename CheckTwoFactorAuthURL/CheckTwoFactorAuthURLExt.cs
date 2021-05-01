@@ -116,6 +116,10 @@ namespace CheckTwoFactorAuthURL
                 {
                     results.Add(new Tuple<PwEntry, TwoFactorSite>(entry, matchingEntries.First()));
                 }
+                else
+                {
+                    results.Add(new Tuple<PwEntry, TwoFactorSite>(entry, new TwoFactorSite()));
+                }
             }
 
             results.Sort((left, right) => left.Item1.Strings.Get(KPRes.Title).ReadString().CompareTo(right.Item1.Strings.Get(KPRes.Title).ReadString()));

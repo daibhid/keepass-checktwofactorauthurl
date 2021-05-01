@@ -31,6 +31,7 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.EntryName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.URL = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SourceURL = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SupportsTwoFactor = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.SupportsPhone = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.SupportsSMS = new System.Windows.Forms.DataGridViewCheckBoxColumn();
@@ -48,6 +49,7 @@
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.EntryName,
             this.URL,
+            this.SourceURL,
             this.SupportsTwoFactor,
             this.SupportsPhone,
             this.SupportsSMS,
@@ -73,6 +75,12 @@
             this.URL.HeaderText = "URL";
             this.URL.Name = "URL";
             this.URL.ReadOnly = true;
+            // 
+            // SourceURL
+            // 
+            this.SourceURL.HeaderText = "SourceURL";
+            this.SourceURL.Name = "SourceURL";
+            this.SourceURL.ReadOnly = true;
             // 
             // SupportsTwoFactor
             // 
@@ -132,6 +140,7 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.DataGridViewTextBoxColumn EntryName;
         private System.Windows.Forms.DataGridViewTextBoxColumn URL;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SourceURL;
         private System.Windows.Forms.DataGridViewCheckBoxColumn SupportsTwoFactor;
         private System.Windows.Forms.DataGridViewCheckBoxColumn SupportsPhone;
         private System.Windows.Forms.DataGridViewCheckBoxColumn SupportsSMS;
