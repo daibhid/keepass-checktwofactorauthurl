@@ -61,7 +61,7 @@ namespace CheckTwoFactorAuthURL.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://twofactorauth.org/api/v2/all.json.
+        ///   Looks up a localized string similar to https://2fa.directory/api/v2/all.json.
         /// </summary>
         internal static string TwoFactorURL {
             get {
